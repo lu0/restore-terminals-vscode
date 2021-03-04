@@ -78,19 +78,20 @@ async function runCommands(commands: string[], terminal: vscode.Terminal) {
   }
 }
 
-async function createNewSplitTerminal(name: string | undefined): Promise<vscode.Terminal> {
+async function createNewSplitTerminal(name: string | undefined): Promise<any> {
   return new Promise(async (resolve, reject) => {
+    const initialTerminalCount = vscode.window.terminals.length;
     await vscode.commands.executeCommand("workbench.action.terminal.split");
-    if (name) {
-      await vscode.commands.executeCommand("workbench.action.terminal.renameWithArg", {
-        name
-      })
-    }
-
-    vscode.window.onDidChangeActiveTerminal((terminal) => {
-      if (terminal) {
-        resolve(terminal);
+    await delay(500);
+    const finalTerminalCount = vscode.window.terminals.length;
+    if (finalTerminalCount > initialTerminalCount) {
+      if (name) {
+        await vscode.commands.executeCommand("workbench.action.terminal.renameWithArg", {name});
       }
-    });
+      await delay(500);
+      resolve(vscode.window.terminals[finalTerminalCount - 1]);
+    } else {
+      resolve(null);
+    }
   });
 }
