@@ -9,13 +9,13 @@ import restoreTerminals from './restoreTerminals';
 //do NOT make async and await the async functions in this func, or the command just doesn't work
 export function activate(context: vscode.ExtensionContext) {
 
-	console.log('restore-terminals is now active!');
+	console.log('restore-integrated-terminals is now active!');
 
 	const shouldRunOnStartup: boolean | undefined = vscode.workspace.getConfiguration("restoreTerminals").get("runOnStartup")
 
 
 
-	let disposable = vscode.commands.registerCommand('restore-terminals.restoreTerminals', async () => {
+	let disposable = vscode.commands.registerCommand('restore-integrated-terminals.restoreTerminals', async () => {
 
 		restoreTerminals()
 
